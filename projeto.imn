@@ -1,0 +1,216 @@
+node n0 {
+    type pc
+    network-config {
+	hostname pc1
+	!
+	interface lo0
+	 type lo
+	 ip address 127.0.0.1/8
+	!
+	interface eth0
+	 ip address 10.0.0.20/24
+	 mac address 42:00:aa:00:00:01
+	!
+    }
+    auto_default_routes enabled
+    canvas c0
+    iconcoords {192 192}
+    labelcoords {192 223}
+    interface-peer {eth0 n4}
+}
+
+node n1 {
+    type pc
+    network-config {
+	hostname pc2
+	!
+	interface eth0
+	 mac address 42:00:aa:00:00:06
+	 ip address 10.0.2.20/24
+	!
+	interface lo0
+	 type lo
+	 ip address 127.0.0.1/8
+	!
+    }
+    auto_default_routes enabled
+    canvas c0
+    iconcoords {600 192}
+    labelcoords {600 223}
+    interface-peer {eth0 n5}
+}
+
+node n2 {
+    type pc
+    network-config {
+	hostname pc3
+	!
+	interface eth0
+	 mac address 42:00:aa:00:00:04
+	 ip address 10.0.3.20/24
+	!
+	interface lo0
+	 type lo
+	 ip address 127.0.0.1/8
+	!
+    }
+    auto_default_routes enabled
+    canvas c0
+    iconcoords {192 432}
+    labelcoords {192 463}
+    interface-peer {eth0 n4}
+}
+
+node n3 {
+    type pc
+    network-config {
+	hostname pc4
+	!
+	interface lo0
+	 type lo
+	 ip address 127.0.0.1/8
+	!
+	interface eth0
+	 ip address 10.0.4.20/24
+	 mac address 42:00:aa:00:00:08
+	!
+    }
+    auto_default_routes enabled
+    canvas c0
+    iconcoords {600 432}
+    labelcoords {600 463}
+    interface-peer {eth0 n5}
+}
+
+node n4 {
+    type router
+    model quagga
+    network-config {
+	hostname router1
+	!
+	interface eth2
+	 mac address 42:00:aa:00:00:05
+	 ip address 10.0.3.1/24
+	!
+	interface lo0
+	 type lo
+	 ip address 127.0.0.1/8
+	!
+	interface eth1
+	 ip address 10.0.1.2/24
+	 mac address 42:00:aa:00:00:03
+	!
+	interface eth0
+	 ip address 10.0.0.1/24
+	 mac address 42:00:aa:00:00:00
+	!
+	router rip
+	 redistribute static
+	 redistribute connected
+	 redistribute ospf
+	 network 0.0.0.0/0
+	!
+	router ripng
+	 redistribute static
+	 redistribute connected
+	 redistribute ospf6
+	 network ::/0
+	!
+    }
+    auto_default_routes enabled
+    canvas c0
+    iconcoords {288 312}
+    labelcoords {288 337}
+    interface-peer {eth0 n0}
+    interface-peer {eth1 n5}
+    interface-peer {eth2 n2}
+}
+
+node n5 {
+    type router
+    model quagga
+    network-config {
+	hostname router2
+	!
+	interface eth1
+	 mac address 42:00:aa:00:00:07
+	 ip address 10.0.2.1/24
+	!
+	interface lo0
+	 type lo
+	 ip address 127.0.0.1/8
+	!
+	interface eth2
+	 ip address 10.0.4.1/24
+	 mac address 42:00:aa:00:00:09
+	!
+	interface eth0
+	 ip address 10.0.1.1/24
+	 mac address 42:00:aa:00:00:02
+	!
+	router rip
+	 redistribute static
+	 redistribute connected
+	 redistribute ospf
+	 network 0.0.0.0/0
+	!
+	router ripng
+	 redistribute static
+	 redistribute connected
+	 redistribute ospf6
+	 network ::/0
+	!
+    }
+    auto_default_routes enabled
+    canvas c0
+    iconcoords {504 312}
+    labelcoords {504 337}
+    interface-peer {eth0 n4}
+    interface-peer {eth1 n1}
+    interface-peer {eth2 n3}
+}
+
+link l0 {
+    nodes {n4 n0}
+    bandwidth 1000000000
+}
+
+link l1 {
+    delay 100000
+    nodes {n5 n4}
+    bandwidth 1000000000
+}
+
+link l2 {
+    nodes {n2 n4}
+    bandwidth 1000000000
+}
+
+link l3 {
+    nodes {n1 n5}
+    bandwidth 1000000000
+}
+
+link l4 {
+    nodes {n3 n5}
+    bandwidth 1000000000
+}
+
+canvas c0 {
+    name {Canvas0}
+}
+
+option show {
+    interface_names yes
+    ip_addresses yes
+    ipv6_addresses yes
+    node_labels yes
+    link_labels yes
+    background_images no
+    annotations yes
+    hostsAutoAssign no
+    grid yes
+    iconSize normal
+    zoom 1.5
+}
+
