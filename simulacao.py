@@ -5,10 +5,10 @@ ALG = ['cubic','reno']
 BER = ['1000000','100000']
 E2E_DELAY = ['10000','100000'] # 10ms e 100ms
 REPETICAO = 8
-TEMPO_EXECUCAO = '1000'
-BANDA_UDP = ['5Mbps','10Mbps']
+TEMPO_EXECUCAO = '10'
+BANDA_UDP = ['10M','500M']
 ID_EXPERIMENTO = 'i1234'
-DADOS_CSV = 'data/cliente.csv'
+DADOS_CSV = 'data/dados.csv'
 CENARIO_IMUNES = 'projeto.imn'
 
 ip_pc1 = '10.0.0.20'
@@ -28,38 +28,35 @@ def imprime_cabecalho():
 def prepara_cenario():
     init_server_udp = f'sudo himage pc3@{ID_EXPERIMENTO} iperf -s -u &'
     init_server_tcp = f'sudo himage pc1@{ID_EXPERIMENTO} iperf -s &'
-    init_cliente_udp = f'sudo himage pc4@{ID_EXPERIMENTO} iperf -c {ip_pc3} -u -t {TEMPO_EXECUCAO} -b {BANDA_UDP} &'
     subprocess.run(init_server_udp, shell=True)
     subprocess.run(init_server_tcp, shell=True)
-    subprocess.run(init_cliente_udp, shell=True)
     imprime_cabecalho()
     
 def encerra_imunes():
     print('Encerrando simulações já existentes...')
     subprocess.Popen(f'sudo cleanupAll', shell=True).wait()
 
-def simulacao():
-    print('Iniciando imunes...')
-    inicia_imunes()
-    print('Preparando cenário...')
-    prepara_cenario()
-    
+def inicia_simulacao():
     print('Iniciando simulação...')
-    for rep in range(REPETICAO):
-        for proto in ALG:
-            for ber in BER:
-                for e2e in E2E_DELAY:
-                    for banda in BANDA_UDP:
-                        echo = f'echo -n {rep},{proto},{ber},{e2e},{banda}, >> {DADOS_CSV}'
-                        subprocess.run(echo, shell=True)
-                        
-                        print('comando vlink')
-                        vlink = f'sudo vlink -BER {ber} -d {e2e} router1:router2@{ID_EXPERIMENTO}'
-                        subprocess.run(vlink, shell=True)
-                        
-                        init_cliente_tcp = f'sudo himage pc2@{ID_EXPERIMENTO} iperf -c {ip_pc1} -t {TEMPO_EXECUCAO} -Z {proto} -y C >> {DADOS_CSV}'
-                        subprocess.run(init_cliente_tcp, shell=True)
-    encerra_imunes()
-
-encerra_imunes() # Limpa experimentos já existentes
-simulacao() # Inicia a simulação
+    for banda in BANDA_UDP:
+        init_cliente_udp = f'sudo himage pc4@{ID_EXPERIMENTO} iperf -c {ip_pc3} -u -t {TEMPO_EXECUCAO} -b {banda} &'
+        subprocess.run(init_cliente_udp, shell=True)
+        
+        for rep in range(REPETICAO):
+            for proto in ALG:
+                for ber in BER:
+                    for e2e in E2E_DELAY:
+                            echo = f'echo -n {rep},{proto},{ber},{e2e},{banda}, >> {DADOS_CSV}'
+                            subprocess.run(echo, shell=True)
+                            
+                            vlink = f'sudo vlink -BER {ber} -dly {e2e} router1:router2@{ID_EXPERIMENTO}'
+                            subprocess.run(vlink, shell=True)
+                            
+                            init_cliente_tcp = f'sudo himage pc2@{ID_EXPERIMENTO} iperf -c {ip_pc1} -t {TEMPO_EXECUCAO} -Z {proto} -y C >> {DADOS_CSV}'
+                            subprocess.run(init_cliente_tcp, shell=True)
+                            
+encerra_imunes()
+inicia_imunes()
+prepara_cenario()
+inicia_simulacao()
+encerra_imunes()
