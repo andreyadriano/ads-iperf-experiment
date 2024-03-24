@@ -1,5 +1,7 @@
 # Mini Projeto de ADS - Avaliação de Desempenho do Protocolo TCP em condições de congestionamento: cubic x reno
 
+[Descrição do projeto](docs/MiniProjetoADS.pdf)
+
 ## Alunos
 
 <a href="https://github.com/andreyadriano">
