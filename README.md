@@ -66,3 +66,21 @@ Simulação com IMUNES e iperf
 | 6 | 500 Mbps | 1/100000 | 100 ms | 2.07 Mbps | 1.07 Mbps |
 | 7 | 500 Mbps | 1/1000000 | 10 ms | 49.7 Mbps | 79.1 Mbps |
 | 8 | 500 Mbps | 1/1000000 | 100 ms | 12.6 Mbps | 5.51 Mbps |
+
+## Conclusões
+
+Melhor resultado:
+  - Algoritmo Reno
+  - Taxa de transmissão média: 79.1 Mbps
+  - Tráfego background UDP: 500 Mbps
+  - BER: 1e-6
+  - Delay: 10 ms
+
+Pior resultado:
+  - Algoritmo Reno
+  - Taxa de transmissão média: 1.07 Mbps
+  - Tráfego background UDP: 500 Mbps
+  - BER: 1e-5
+  - Delay: 100 ms
+
+Apesar de o algoritmo Reno ter apresentado o melhor resultado absoluto, o algoritmo Cubic apresentou resultados mais consistentes, tendo um desempenho melhor do que o Reno em quases todos os outros cenários.
