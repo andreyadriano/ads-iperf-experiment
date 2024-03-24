@@ -1,5 +1,25 @@
 # Mini Projeto de ADS - Avaliação de Desempenho do Protocolo TCP em condições de congestionamento: cubic x reno
 
+## Alunos
+
+<a href="https://github.com/andreyadriano">
+    <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/55251806?v=4" width="100px;"/>
+    <br>
+    <sub>Andrey Adriano</sub>
+</a>
+
+&nbsp;
+
+<a href="https://github.com/faustocristiano">
+    <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/86061017?v=4" width="100px;"/>
+    <br>
+    <sub>Fausto Cristiano</sub>
+</a>
+
+## Objetivo
+
+O objetivo deste trabalho é fazer uma comparação do desempenho dos algoritmos Cubic e Reno em condições de congestionamento. Para isso, serão simulados cenários com diferentes valores de BER e delay, além de gerar tráfego de background UDP para simular o congestionamento da rede.
+
 ## Rede simulada
 
 ![rede](./images/rede.png)
