@@ -78,11 +78,15 @@ Melhor resultado:
   - BER: 1e-6
   - Delay: 10 ms
 
+![melhor_cenario](images/melhor_cenario.png)
+
 Pior resultado:
   - Algoritmo Reno
   - Taxa de transmissão média: 1.07 Mbps
   - Tráfego background UDP: 500 Mbps
   - BER: 1e-5
   - Delay: 100 ms
+
+![pior_cenario](images/pior_cenario.png)
 
 Apesar de o algoritmo Reno ter apresentado o melhor resultado absoluto, o algoritmo Cubic apresentou resultados mais consistentes, tendo um desempenho melhor do que o Reno em quases todos os outros cenários.
